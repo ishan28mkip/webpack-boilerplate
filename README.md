@@ -8,3 +8,9 @@ Features of Boilerplate Version 0.1.0
 * hot-dev server works
 * build html template works to include font from cdn
 * More features to be written later...
+
+TODO :
+* Add Karma for unit tests.
+* Add ESLint.
+* Add something to measure test coverage.
+* Read how to perform lazy loading.
