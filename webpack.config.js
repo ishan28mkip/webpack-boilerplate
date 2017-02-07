@@ -4,10 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+
 module.exports = {
 	'entry' : {
 		'main' : resolve(__dirname,'src/index.js'),
-		'vendor' : ['react', 'react-dom', 'redux','react-redux','immutable','react-router','react-router-redux','rebass']
+		'vendor' : ['react', 'react-dom', 'redux','react-redux','react-router','react-router-redux','react-jsonschema-form', 'whatwg-fetch', 'es6-promise', 'halogen', 'classnames']
 	},
 	'output' : {
 		'filename' : '[chunkhash].[name].js',
@@ -73,17 +74,28 @@ module.exports = {
 		}]
 	},
 	'plugins': [
-		new HtmlWebpackPlugin({ title: 'kim-app' }),
+		new HtmlWebpackPlugin({ template: 'index.template.ejs' }),
 		new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor', 'manifest']
         }),
         new ExtractTextPlugin("styles.css"),
         new CleanWebpackPlugin(['build'], {
 			root: resolve(__dirname),
+		}),
+		// This is done to allow the fetch polyfill and promise support
+		new webpack.ProvidePlugin({
+			Promise: 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise',
+			fetch: 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch'
 		})
 	],
 	'resolve' : {
-		'extensions': ['.js', '.jsx', '.scss', '.css']
+		'extensions': ['.js', '.jsx', '.scss', '.css'],
+		'alias' : {
+			'actions' : resolve(__dirname, 'src/actions'),
+			'components' : resolve(__dirname, 'src/components'),
+			'reducers' : resolve(__dirname, 'src/reducers'),
+			'helpers' : resolve(__dirname, 'src/helpers')
+		}
 	},
 	'target' : 'web'
 }

@@ -88,10 +88,20 @@ module.exports = {
 	},
 	'plugins': [
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NamedModulesPlugin()
+		new webpack.NamedModulesPlugin(),
+		new webpack.ProvidePlugin({
+			Promise: 'imports-loader?this=>global!exports-loader?global.Promise!es6-promise',
+			fetch: 'imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch'
+		})
 	],
 	'resolve' : {
-		'extensions': ['.js', '.jsx', '.scss', '.css']
+		'extensions': ['.js', '.jsx', '.scss', '.css'],
+		'alias' : {
+			'actions' : resolve(__dirname, 'src/actions'),
+			'components' : resolve(__dirname, 'src/components'),
+			'reducers' : resolve(__dirname, 'src/reducers'),
+			'helpers' : resolve(__dirname, 'src/helpers')
+		}
 	},
 	'target' : 'web'
 }
